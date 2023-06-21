@@ -18,41 +18,44 @@ class TeamEmbed : TEmbed
         _fields = new List<Discord.EmbedFieldBuilder>();
         foreach (var team in teams)
         {
-            string members;
-            if (!await team.HasPeople())
+            if (team.ID != 16)
             {
-                List<Person> temp = await team.GetPeopleFromTeam();
-                members = temp[0].Name;
-                for (int i = 1; i < temp.Count; i++)
+                string members;
+                if (!await team.HasPeople())
                 {
-                    members += ", ";
-                    members += temp[i].Name;
+                    List<Person> temp = await team.GetPeopleFromTeam();
+                    members = temp[0].Name;
+                    for (int i = 1; i < temp.Count; i++)
+                    {
+                        members += ", ";
+                        members += temp[i].Name;
+                    }
                 }
-            }
-            else
-            {
-                members = "N/A";
-            }
+                else
+                {
+                    members = "N/A";
+                }
 
-            _fields.Add(new Discord.EmbedFieldBuilder()
-            {
-                Name = "ID",
-                Value = team.ID,
-                IsInline = true,
-            });
-            _fields.Add(new Discord.EmbedFieldBuilder()
-            {
-                Name = "Name",
-                Value = team.Name,
-                IsInline = true,
-            });
-            _fields.Add(new Discord.EmbedFieldBuilder()
-            {
-                Name = "Members",
-                Value = members,
-                IsInline = true
-            });
-        };
+                _fields.Add(new Discord.EmbedFieldBuilder()
+                {
+                    Name = "ID",
+                    Value = team.ID,
+                    IsInline = true,
+                });
+                _fields.Add(new Discord.EmbedFieldBuilder()
+                {
+                    Name = "Name",
+                    Value = team.Name,
+                    IsInline = true,
+                });
+                _fields.Add(new Discord.EmbedFieldBuilder()
+                {
+                    Name = "Members",
+                    Value = members,
+                    IsInline = true
+                });
+            };
+        }
     }
     public override async Task SetupEmbed(Team team)
     {
