@@ -21,19 +21,12 @@ class TeamEmbed : TEmbed
             if (team.ID != 16)
             {
                 string members;
-                if (!await team.HasPeople())
-                {
                     List<Person> temp = await team.GetPeopleFromTeam();
                     members = temp[0].Name;
-                    for (int i = 1; i < temp.Count; i++)
-                    {
-                        members += ", ";
-                        members += temp[i].Name;
-                    }
-                }
-                else
+                for (int i = 1; i < temp.Count; i++)
                 {
-                    members = "N/A";
+                    members += ", ";
+                    members += temp[i].Name;
                 }
 
                 _fields.Add(new Discord.EmbedFieldBuilder()

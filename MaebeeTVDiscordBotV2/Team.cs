@@ -27,15 +27,6 @@ class Team : SupabaseClient
             return _supabaseTeam.TeamName;
         }
     }
-    public async Task<bool> HasPeople()
-    {
-            var ids = await client
-                .From<supabasePersonTeam>()
-                .Select("*")
-                .Where(x => x.TeamID == ID)
-                .Get();
-        return ids.Models != null;
-    }
 
     public async Task<supabaseTeam> GetFromDatabase(long ID)
     {
