@@ -35,7 +35,7 @@ class DisplayWorkHoursCommand : SlashCommand
         List<WorkAmountForMonth> temp = await output.GetListPreviousTimes();
         temp.Add(await output.GetMonthTimes());
 
-        for (int i = 0; i <= (temp.Count / 25); i++)
+        for (int i = 1; i <= (temp.Count / 25); i++)
         {
             var thing = new WorkHoursEmbed();
             var person = new Person();

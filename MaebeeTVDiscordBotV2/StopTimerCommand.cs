@@ -21,9 +21,9 @@ class StopTimerCommand : SlashCommand
 
         await _tracker.SetPerson(command.User.Username + "#" + command.User.Discriminator);
 
-        await _tracker.PushToDatabase();
+        await _tracker.PushEndToDatabase();
 
-        await command.FollowupAsync("Timer Started at" + DateTime.Now.ToShortTimeString());
+        await command.FollowupAsync("Timer Stopped at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();
     }
 }
