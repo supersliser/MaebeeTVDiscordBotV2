@@ -21,6 +21,18 @@ class WorkTimeTracker : SupabaseClient
         }
     }
 
+    public async Task<bool> TimerGoing()
+    {
+        var temp = await client
+            .From<supabaseWorkTracker>()
+            .Select("*")
+            .Where(x => x.Person == _supabaseWorkTracker.Person)
+            .Order("Start", Postgrest.Constants.Ordering.Descending)
+            .Get();
+
+        return temp.Models[0].Start == temp.Models[0].End;
+    }
+
     public async Task SetPerson(string discord)
     {
         if (_supabaseWorkTracker == null)

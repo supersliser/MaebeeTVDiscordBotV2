@@ -22,9 +22,17 @@ class StartTimerCommand : SlashCommand
 
         await _tracker.SetPerson(command.User.Username + "#" + command.User.Discriminator);
 
-        await _tracker.PushStartToDatabase();
+        if (!await _tracker.TimerGoing())
+        {
+            await _tracker.PushStartToDatabase();
 
-        await command.FollowupAsync("Timer Started at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
+            await command.FollowupAsync("Timer Started at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
+        }
+        else
+        {
+            await command.FollowupAsync("Timer already active, please cancel current timer before starting a new one", ephemeral: Ephemeral);
+        }
         await command.DeleteOriginalResponseAsync();
+
     }
 }
