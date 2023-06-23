@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 class DisplayTasksCommand : SlashCommand
 {
-    List<STask> _tasks;
     public DisplayTasksCommand()
     {
         _name = "display-tasks";
@@ -21,7 +20,7 @@ class DisplayTasksCommand : SlashCommand
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
         var temp = await new STask().GetTasksForPerson(command.User.Username + "#" + command.User.Discriminator);
-        _tasks = new List<STask>();
+        List<STask> _tasks = new List<STask>();
         foreach (var task in temp)
         {
             _tasks.Add(new STask());

@@ -54,6 +54,9 @@ class Program
         commands.Add(new ReportOccuranceCommand());
         commands.Add(new DisplayPersonCommand());
         commands.Add(new UpdateDiscordCommand());
+        commands.Add(new StartTimerCommand());
+        commands.Add(new StopTimerCommand());
+        commands.Add(new DisplayWorkHoursCommand());
 
         for (int i = 0; i < guilds.Length; i++)
         {

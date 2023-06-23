@@ -167,6 +167,7 @@
     <Compile Include="DisplayTasksCommand.cs" />
     <Compile Include="DisplayTeamsCommand.cs" />
     <Compile Include="ActivityReport.cs" />
+    <Compile Include="DisplayWorkHoursCommand.cs" />
     <Compile Include="FrogSlashCommand.cs" />
     <Compile Include="OccuranceReport.cs" />
     <Compile Include="OccuranceReportEmbed.cs" />
@@ -178,6 +179,8 @@
     <Compile Include="ReportOccuranceCommand.cs" />
     <Compile Include="ReportOccuranceModal.cs" />
     <Compile Include="SlashCommand.cs" />
+    <Compile Include="StartTimerCommand.cs" />
+    <Compile Include="StopTimerCommand.cs" />
     <Compile Include="SupabaseClient.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskEmbed.cs" />
@@ -188,6 +191,8 @@
     <Compile Include="TModal.cs" />
     <Compile Include="UpdateDiscordCommand.cs" />
     <Compile Include="UserEmbed.cs" />
+    <Compile Include="WorkHoursEmbed.cs" />
+    <Compile Include="WorkTimeTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

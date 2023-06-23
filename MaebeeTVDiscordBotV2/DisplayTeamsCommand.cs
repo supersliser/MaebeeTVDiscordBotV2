@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 class DisplayTeamsCommand : SlashCommand
 {
-    List<Team> _teams;
     public DisplayTeamsCommand()
     {
         _name = "display-teams";
@@ -21,7 +20,7 @@ class DisplayTeamsCommand : SlashCommand
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
         var temp = await new Team().GetAllFromDatabase();
-        _teams = new List<Team>();
+        List<Team> _teams = new List<Team>();
         foreach (var team in temp)
         {
             _teams.Add(new Team());

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 class DisplayPersonCommand : SlashCommand
 {
-    Person _person;
     public DisplayPersonCommand()
     {
         _name = "display-person";
@@ -28,7 +27,7 @@ class DisplayPersonCommand : SlashCommand
     {
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
-        _person = new Person();
+        Person _person = new Person();
         await _person.GetFromDatabase((SocketUser)command.Data.Options.Where(x => x.Name == "discord").First().Value);
 
         var temp = new UserEmbed();
