@@ -24,7 +24,7 @@ class StartTimerCommand : SlashCommand
 
         await _tracker.PushStartToDatabase();
 
-        await command.FollowupAsync("Timer Started at" + DateTime.Now.ToShortTimeString());
+        await command.FollowupAsync("Timer Started at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();
     }
 }
