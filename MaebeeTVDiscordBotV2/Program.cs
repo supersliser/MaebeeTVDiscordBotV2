@@ -57,6 +57,10 @@ class Program
         commands.Add(new StartTimerCommand());
         commands.Add(new StopTimerCommand());
         commands.Add(new DisplayWorkHoursCommand());
+        commands.Add(new WelcomeCommand());
+        commands.Add(new WelcomeLeadCommand());
+
+
 
         for (int i = 0; i < guilds.Length; i++)
         {

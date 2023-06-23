@@ -191,6 +191,10 @@
     <Compile Include="TModal.cs" />
     <Compile Include="UpdateDiscordCommand.cs" />
     <Compile Include="UserEmbed.cs" />
+    <Compile Include="VoiceHandler.cs" />
+    <Compile Include="WelcomeCommand.cs" />
+    <Compile Include="WelcomeEmbed.cs" />
+    <Compile Include="WelcomeLeadEmbed.cs" />
     <Compile Include="WorkHoursEmbed.cs" />
     <Compile Include="WorkTimeTracker.cs" />
   </ItemGroup>
