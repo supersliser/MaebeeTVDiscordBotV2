@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 class UserEmbed : TEmbed
 {
@@ -144,5 +145,45 @@ class UserEmbed : TEmbed
                     IsInline = true,
                 });
         }
+    }
+    public async Task SetupEmbed(Person person, List<Team> teams)
+    {
+        string text;
+        text = teams[0].Name;
+        for (int i = 1; i < teams.Count; i++)
+        {
+            text += ", ";
+            text += teams[i].Name;
+        }
+        _person = person;
+        _title = Name;
+        _description = "These are the details for " + Name;
+        _fields = new List<Discord.EmbedFieldBuilder>
+        {
+            new EmbedFieldBuilder()
+            {
+                Name = "ID",
+                Value = ID,
+                IsInline = true,
+            },
+            new EmbedFieldBuilder()
+            {
+                Name = "Name",
+                Value = Name,
+                IsInline = true,
+            },
+            new EmbedFieldBuilder()
+            {
+                Name = "Discord",
+                Value = Discord,
+                IsInline = true,
+            },
+            new EmbedFieldBuilder()
+            {
+                Name = "Teams",
+                Value = text,
+                IsInline = false,
+            },
+        };
     }
 }

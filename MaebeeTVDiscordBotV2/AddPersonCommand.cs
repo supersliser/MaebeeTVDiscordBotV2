@@ -54,10 +54,7 @@ class AddPersonCommand : SlashCommand
 
     public override async Task HandleCommand(SocketSlashCommand command)
     {
-        embed = new List<TEmbed>()
-        {
-            new UserEmbed(),
-        };
+        embed = new List<TEmbed>();
         await base.HandleCommand(command);
 
         string[] temp = new string[1];
@@ -82,7 +79,9 @@ class AddPersonCommand : SlashCommand
             teams,
             strikesValue
             );
-        await embed[0].SetupEmbed(_person);
+        var thing = new UserEmbed();
+        await thing.SetupEmbed(_person, _person.GetTeams());
+        embed.Add(thing);
 
         _buttons = new List<TButton>()
         {

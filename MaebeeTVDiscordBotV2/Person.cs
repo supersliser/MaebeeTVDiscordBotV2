@@ -163,6 +163,10 @@ class Person : SupabaseClient
             await GetTeamsFromDatabase(teams);
         }
     }
+    public List<Team> GetTeams()
+    {
+        return _supabaseTeams;
+    }
     public void UpdateDiscord(string discord)
     {
         _supabasePerson.Discord = discord;
