@@ -15,17 +15,16 @@ class WelcomeCommand : SlashCommand
         _name = "initiate-hello";
         _description = "Says hello";
         _ephemeral = false;
-        _options = new List<SlashCommandOption>()
-        {
-            new SlashCommandOption(
-                "vc",
-                "The VC which the bot should join",
-                true,
-                Discord.ApplicationCommandOptionType.Channel)
-        };
+        //_options = new List<SlashCommandOption>()
+        //{
+        //    new SlashCommandOption(
+        //        "vc",
+        //        "The VC which the bot should join",
+        //        true,
+        //        Discord.ApplicationCommandOptionType.Channel)
+        //};
     }
 
-    [Command("initiate-hello", RunMode = RunMode.Async)]
     public override async Task HandleCommand(SocketSlashCommand command)
     {
         await command.RespondAsync("Preparing to get funky");
@@ -35,7 +34,7 @@ class WelcomeCommand : SlashCommand
             new WelcomeEmbed()
         };
 
-        var voice = new VoiceHandler();
+        //var voice = new VoiceHandler();
         
         //await voice.JoinAudio(((IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value).Guild,(IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value);
         //await voice.SendAudioAsync(((IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value).Guild, command.Channel, "'/voicebooking-speech.wav/'");

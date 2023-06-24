@@ -282,6 +282,10 @@ class STask : SupabaseClient
     }
     public async Task<List<supabaseTask>> GetFromDatabaseForTeam(long TeamID)
     {
+        if (_supabaseTask == null)
+        {
+            _supabaseTask = new supabaseTask();
+        }
         _supabaseTask.TeamID = TeamID;
         var output = await client
             .From<supabaseTask>()
@@ -447,30 +451,25 @@ class STask : SupabaseClient
             .Get()
             ;
 
-        var taskIDs = await client
-            .From<supabasePersonTask>()
-            .Select("*")
-            .Where(x => x.PersonID == person.Model.PersonID)
-            .Get()
-            ;
-
-        foreach (supabasePersonTask id in taskIDs.Models)
-        {
-            output.Add(await GetFromDatabase(id.TaskID));
-        }
-
         var personTeams = await client
             .From<supabasePersonTeam>()
             .Select("*")
             .Where(x => x.PersonID == person.Model.PersonID)
             .Get();
 
-        foreach (supabasePersonTeam team in personTeams.Models)
+        foreach (supabasePersonTeam teamid in personTeams.Models)
         {
-            var task = await GetFromDatabase(team.TeamID);
-            if (!output.Contains(task) && task != null)
+            var tasks = await GetFromDatabaseForTeam(teamid.TeamID);
+
+            if (tasks != null)
             {
-                output.Add(task);
+                foreach (var task in tasks)
+                {
+                    if (!task.Completed)
+                    {
+                        output.Add(task);
+                    }
+                }
             }
         }
         return output;
@@ -517,7 +516,7 @@ class STask : SupabaseClient
 
     public override async Task PushToDatabase()
     {
-        if (GetFromDatabase(ID) != null)
+        if (ID == 0)
         {
             _supabaseTask.DateCreated = DateTime.Today;
             _supabaseTask.DateLastModified = DateTime.Today;
@@ -557,9 +556,21 @@ class STask : SupabaseClient
     {
         _supabaseTask.Completed = true;
         _supabaseTask.DateCompleted = DateTime.Today;
-        await PushToDatabase();
+        await client.From<supabaseTask>()
+            .Where(x => x.TaskID == ID)
+            .Set(x => x.Completed, true)
+            .Set(x => x.DateCompleted, DateTime.Today)
+            .Update();
     }
-
+    public async Task AddPerson(long personID)
+    {
+        var thing = new supabasePersonTask()
+        {
+            TaskID = ID,
+            PersonID = personID
+        };
+        await client.From<supabasePersonTask>().Insert(thing);
+    }
     public STask()
     {
 

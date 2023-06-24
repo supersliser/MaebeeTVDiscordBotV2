@@ -27,16 +27,13 @@ class DisplayTasksCommand : SlashCommand
             _tasks.Last().SetTask(task);
         }
 
-        for (int i = 0; i < (_tasks.Count / 2); i++)
+        for (int i = 1; i < (_tasks.Count / 2); i++)
         {
             embed.Add(new TaskEmbed());
             await embed.Last().SetupEmbed(_tasks.GetRange(i, 2), false);
         }
-        if (_tasks.Count % 2 == 1)
-        {
-            embed.Add(new TaskEmbed());
-            await embed.Last().SetupEmbed(_tasks.GetRange(((_tasks.Count / 2) * 2), _tasks.Count % 2), false);
-        }
+        embed.Add(new TaskEmbed());
+        await embed.Last().SetupEmbed(_tasks.GetRange(((_tasks.Count / 2) * 2), _tasks.Count % 2), false);
 
         var embedOutput = new List<Embed>();
         foreach (var embed in embed)

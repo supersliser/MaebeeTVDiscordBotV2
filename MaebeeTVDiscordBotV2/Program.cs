@@ -59,6 +59,8 @@ class Program
         commands.Add(new DisplayWorkHoursCommand());
         commands.Add(new WelcomeCommand());
         commands.Add(new WelcomeLeadCommand());
+        commands.Add(new AcceptTaskCommand());
+        commands.Add(new CompleteTaskCommand());
 
 
 

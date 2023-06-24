@@ -158,11 +158,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AcceptButton.cs" />
+    <Compile Include="AcceptTaskCommand.cs" />
     <Compile Include="ActivityReportEmbed.cs" />
     <Compile Include="AddPersonCommand.cs" />
     <Compile Include="AddTaskCommand.cs" />
     <Compile Include="AddTeamCommand.cs" />
     <Compile Include="CancelButton.cs" />
+    <Compile Include="CompleteTaskCommand.cs" />
     <Compile Include="DisplayPersonCommand.cs" />
     <Compile Include="DisplayTasksCommand.cs" />
     <Compile Include="DisplayTeamsCommand.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="VoiceHandler.cs" />
     <Compile Include="WelcomeCommand.cs" />
     <Compile Include="WelcomeEmbed.cs" />
+    <Compile Include="WelcomeLeadCommand.cs" />
     <Compile Include="WelcomeLeadEmbed.cs" />
     <Compile Include="WorkHoursEmbed.cs" />
     <Compile Include="WorkTimeTracker.cs" />
