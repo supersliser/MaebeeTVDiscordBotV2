@@ -166,6 +166,8 @@
     <Compile Include="CancelButton.cs" />
     <Compile Include="CompleteTaskCommand.cs" />
     <Compile Include="DatabasePersonController.cs" />
+    <Compile Include="DatabaseTaskController.cs" />
+    <Compile Include="DatabaseTeamController.cs" />
     <Compile Include="DisplayPersonCommand.cs" />
     <Compile Include="DisplayTasksCommand.cs" />
     <Compile Include="DisplayTeamsCommand.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="StrikePersonCommand.cs" />
     <Compile Include="SupabaseClient.cs" />
     <Compile Include="Task.cs" />
+    <Compile Include="Task2.cs" />
     <Compile Include="TaskEmbed.cs" />
     <Compile Include="TButton.cs" />
     <Compile Include="Team.cs" />

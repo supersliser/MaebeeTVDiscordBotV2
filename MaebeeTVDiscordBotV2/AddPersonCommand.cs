@@ -8,7 +8,7 @@ using System.Reflection;
 
 class AddPersonCommand : SlashCommand
 {
-    Person _person;
+    Person2 _person;
     public AddPersonCommand()
     {
         _name = "add-person";
@@ -37,7 +37,7 @@ class AddPersonCommand : SlashCommand
 
     public async Task HandleAccept(SocketMessageComponent command)
     {
-        await _person.PushToDatabase();
+        await new DatabasePersonController().PushToDatabase(_person);
         await command.RespondAsync("Database Updated", ephemeral: Ephemeral);
     }
     public async Task HandleCancel(SocketMessageComponent command)
@@ -57,14 +57,12 @@ class AddPersonCommand : SlashCommand
 
         var teams = command.Data.Options.Where(x => x.Name == "teams").First().Value.ToString().Split(temp, StringSplitOptions.None);
 
-        _person = new Person();
-        await _person.SetPerson(
-            command.Data.Options.Where(x => x.Name == "name").First().Value.ToString(),
-            ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value).Username + "#" + ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value).Discriminator,
-            teams
-            );
+        _person = new Person2();
+        _person.setName(command.Data.Options.Where(x => x.Name == "name").First().Value.ToString());
+        _person.setDiscord((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value);
+        _person.setTeams();
         var thing = new UserEmbed();
-        await thing.SetupEmbed(_person, _person.GetTeams());
+        await thing.SetupEmbed(_person, _person.getTeams());
         embed.Add(thing);
 
         _buttons = new List<TButton>()

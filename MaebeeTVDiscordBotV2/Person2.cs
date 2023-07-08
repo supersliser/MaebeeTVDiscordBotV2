@@ -5,8 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 class Person2
 {
@@ -20,12 +22,13 @@ class Person2
     protected short Productivity;
     protected short Vibe;
     protected List<Team2> Teams = new List<Team2>();
-    
+    protected List<Task2> Tasks = new List<Task2>();
+
     public Person2()
     {
 
     }
-    public Person2(long iD, string name, string discord, short strikeCount, string image, string description, short activity, short productivity, short vibe, List<Team2> teams)
+    public Person2(long iD, string name, string discord, short strikeCount, string image, string description, short activity, short productivity, short vibe, List<Team2> teams, List<Task2> tasks)
     {
         ID = iD;
         Name = name;
@@ -37,6 +40,7 @@ class Person2
         Productivity = productivity;
         Vibe = vibe;
         Teams = teams;
+        Tasks = tasks;
     }
     public Person2(supabasePerson person)
     {
@@ -93,8 +97,8 @@ class Person2
         this.Image = Image;
     }
     public void setDescription(string Description)
-    { 
-        this.Description = Description; 
+    {
+        this.Description = Description;
     }
     public void setActivityProductivityVibe(List<supabaseActivityReport> reports)
     {
@@ -137,7 +141,32 @@ class Person2
     }
     public void addTeam(Team2 Team)
     {
+        if (Teams == null)
+        {
+            Teams = new List<Team2>();
+        }
         Teams.Add(Team);
+    }
+    public void setSupabase(supabasePerson person)
+    {
+        setID(person.PersonID);
+        setName(person.PersonName);
+        setDiscord(person.Discord);
+        setImage(person.Image);
+        setDescription(person.Description);
+        setStrikeCount(person.StrikeCount);
+    }
+    public void setTasks(List<Task2> tasks)
+    {
+        this.Tasks = tasks;
+    }
+    public void addTask(Task2 task)
+    {
+        if (Tasks == null)
+        {
+            Tasks = new List<Task2>();
+        }
+        Tasks.Add(task);
     }
 
     public long getID()
@@ -146,10 +175,18 @@ class Person2
     }
     public string getName()
     {
+        if (this.Name == null)
+        {
+            return "N/A";
+        }
         return Name;
     }
     public string getDiscord()
     {
+        if (this.Discord == null)
+        {
+            return "N/A";
+        }
         return Discord;
     }
     public short getStrikeCount()
@@ -158,10 +195,18 @@ class Person2
     }
     public string getImage()
     {
+        if (this.Image == null)
+        {
+            return "N/A";
+        }
         return Image;
     }
     public string getDescription()
     {
+        if (this.Description == null)
+        {
+            return "N/A";
+        }
         return Description;
     }
     public short getActivity()
@@ -178,15 +223,37 @@ class Person2
     }
     public List<Team2> getTeams()
     {
+        if (this.Teams == null)
+        {
+            return new List<Team2>();
+        }
         return Teams;
     }
-    public List<string> getTeamNames()
+    public string getTeamNames()
     {
-        List<string> output = new List<string>();
-        foreach (Team2 Team in Teams)
+        if (this.Teams == null)
         {
-            output.Add(Team.getName());
+            return "N/A";
+        }
+        string output = Teams[0].getName();
+        for (int i = 1; i < Teams.Count; i++)
+        {
+            output += ", ";
+            output += Teams[i].getName();
         }
         return output;
     }
+    public supabasePerson getSupabase()
+    {
+        return new supabasePerson()
+        {
+            PersonID = getID(),
+            PersonName = getName(),
+            Discord = getDiscord(),
+            StrikeCount = getStrikeCount(),
+            Description = getDescription(),
+            Image = getImage(),
+        };
+    }
 }
+

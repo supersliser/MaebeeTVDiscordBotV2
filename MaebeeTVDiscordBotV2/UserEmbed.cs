@@ -10,42 +10,9 @@ using System.Web;
 
 class UserEmbed : TEmbed
 {
-    protected Person _person;
+    protected Person2 _person;
     protected List<STask> _tasks;
-
-    public string Name
-    {
-        get
-        {
-            return _person.Name;
-        }
-    }
-    public long ID
-    {
-        get
-        {
-            return _person.ID;
-        }
-    }
-    public string Discord
-    {
-        get
-        {
-            return _person.Discord; 
-        }
-    }
-    public short StrikeCount
-    {
-        get
-        {
-            return _person.StrikeCount;
-        }
-    }
-
-    public async Task<List<Team>> GetTeams()
-    {
-        return await _person.GetTeamsFromDatabase();
-    }    
+   
     public async Task<List<STask>> GetTasks()
     {
         var temp = new STask();
@@ -77,7 +44,7 @@ class UserEmbed : TEmbed
         return output;
     }
 
-    public async Task SetupEmbed(Person person, short activity, short productivity, short vibe)
+    public async Task SetupEmbed(Person2 person, short activity, short productivity, short vibe)
     {
         _person = person;
         _title = Name;
@@ -146,7 +113,7 @@ class UserEmbed : TEmbed
                 });
         }
     }
-    public async Task SetupEmbed(Person person, List<Team> teams)
+    public async Task SetupEmbed(Person2 person, List<Team2> teams)
     {
         string text;
         text = teams[0].Name;

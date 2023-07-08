@@ -27,11 +27,10 @@ class AcceptTaskCommand : SlashCommand
     {
         await base.HandleCommand(command);
 
-        var person = new Person();
-        await person.GetFromDatabase(command.User);
+        var person = new Person2((await new DatabasePersonController().useDiscord(command.User)).getSupabase());
         var task = new STask();
         await task.GetFromDatabase(long.Parse(command.Data.Options.Where(x => x.Name == "id").Last().Value.ToString()));
-        await task.AddPerson(person.ID);
+        await task.AddPerson(person.getID());
 
         await command.FollowupAsync("update successful", ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();

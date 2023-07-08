@@ -9,10 +9,10 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static Person;
+using static PersonOLD;
 
 
-class Person 
+class PersonOLD 
 {
     private supabasePerson _supabasePerson;
     private List<Team> _supabaseTeams;

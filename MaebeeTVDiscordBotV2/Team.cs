@@ -6,10 +6,10 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
-using static Person;
+using static PersonOLD;
 using static Postgrest.Constants;
 
-class Team : SupabaseClient
+class TeamOLD : SupabaseClient
 {
     private supabaseTeam _supabaseTeam;
 
@@ -120,14 +120,3 @@ class Team : SupabaseClient
     }
 }
 
-[Table("Team")]
-#pragma warning disable IDE1006 // Naming Styles
-public class supabaseTeam : BaseModel
-#pragma warning restore IDE1006 // Naming Styles
-{
-    [PrimaryKey("TeamID")]
-    public long TeamID { get; set; }
-
-    [Column("TeamName")]
-    public string TeamName { get; set; }
-}
