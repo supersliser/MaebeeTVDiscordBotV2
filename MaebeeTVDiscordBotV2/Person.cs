@@ -268,6 +268,11 @@ class Person : SupabaseClient
         }
     }
 
+    public void AddStrike()
+    {
+        _supabasePerson.StrikeCount++;
+    }
+
     public Person()
     {
 

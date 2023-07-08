@@ -183,6 +183,7 @@
     <Compile Include="SlashCommand.cs" />
     <Compile Include="StartTimerCommand.cs" />
     <Compile Include="StopTimerCommand.cs" />
+    <Compile Include="StrikePersonCommand.cs" />
     <Compile Include="SupabaseClient.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskEmbed.cs" />
