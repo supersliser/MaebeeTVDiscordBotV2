@@ -165,6 +165,7 @@
     <Compile Include="AddTeamCommand.cs" />
     <Compile Include="CancelButton.cs" />
     <Compile Include="CompleteTaskCommand.cs" />
+    <Compile Include="DatabasePersonController.cs" />
     <Compile Include="DisplayPersonCommand.cs" />
     <Compile Include="DisplayTasksCommand.cs" />
     <Compile Include="DisplayTeamsCommand.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="OccuranceReport.cs" />
     <Compile Include="OccuranceReportEmbed.cs" />
     <Compile Include="Person.cs" />
+    <Compile Include="Person2.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportActivityCommand.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="TaskEmbed.cs" />
     <Compile Include="TButton.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="Team2.cs" />
     <Compile Include="TeamEmbed.cs" />
     <Compile Include="TEmbed.cs" />
     <Compile Include="TModal.cs" />

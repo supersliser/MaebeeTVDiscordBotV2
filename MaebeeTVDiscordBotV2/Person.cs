@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using static Person;
 
 
-class Person : SupabaseClient
+class Person 
 {
     private supabasePerson _supabasePerson;
     private List<Team> _supabaseTeams;
@@ -284,23 +284,7 @@ class Person : SupabaseClient
 }
 
 
-[Table("Person")]
-#pragma warning disable IDE1006 // Naming Styles
-public class supabasePerson : BaseModel
-#pragma warning restore IDE1006 // Naming Styles
-{
-    [PrimaryKey("PersonID")]
-    public long PersonID { get; set; }
 
-    [Column("PersonName")]
-    public string PersonName { get; set; }
-
-    [Column("Discord")]
-    public string Discord { get; set; }
-
-    [Column("StrikeCount")]
-    public short StrikeCount { get; set; }
-}
 [Table("PersonTeam")]
 #pragma warning disable IDE1006 // Naming Styles
 public class supabasePersonTeam : BaseModel

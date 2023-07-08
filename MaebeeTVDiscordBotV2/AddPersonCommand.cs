@@ -31,11 +31,6 @@ class AddPersonCommand : SlashCommand
                 "The @ of the user on discord",
                 true,
                 Discord.ApplicationCommandOptionType.User),
-            new SlashCommandOption(
-                "strike-count",
-                "The number of strikes this person has recieved",
-                false,
-                Discord.ApplicationCommandOptionType.Integer),
         }
         ;
     }
@@ -60,24 +55,13 @@ class AddPersonCommand : SlashCommand
         string[] temp = new string[1];
         temp[0] = ", ";
 
-        long strikesValue;
-        if (command.Data.Options.Count < 4)
-        {
-            strikesValue = 0;
-        }
-        else
-        {
-            strikesValue = long.Parse(command.Data.Options.Where(x => x.Name == "strike-count").First().Value.ToString());
-        }
-
         var teams = command.Data.Options.Where(x => x.Name == "teams").First().Value.ToString().Split(temp, StringSplitOptions.None);
 
         _person = new Person();
         await _person.SetPerson(
             command.Data.Options.Where(x => x.Name == "name").First().Value.ToString(),
             ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value).Username + "#" + ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value).Discriminator,
-            teams,
-            strikesValue
+            teams
             );
         var thing = new UserEmbed();
         await thing.SetupEmbed(_person, _person.GetTeams());
