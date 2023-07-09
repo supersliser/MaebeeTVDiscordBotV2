@@ -27,26 +27,44 @@ class DisplayWorkHoursCommand : SlashCommand
     {
         await base.HandleCommand(command);
 
-        string discord = ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value).Username + "#" + ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value).Discriminator;
-
-        WorkTimeTracker output = new WorkTimeTracker();
-        await output.SetPerson(discord);
+        var thing = await new DatabaseWorkTimeTrackerController().useBeforeStart(DateTime.Now);
+        var output = new WorkTimeTracker2();
+        output.setPerson(await new DatabasePersonController().useDiscord((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value));
         embed = new List<TEmbed>();
-        List<WorkAmountForMonth> temp = await output.GetListPreviousTimes();
-        temp.Add(await output.GetMonthTimes());
-
-        for (int i = 1; i <= (temp.Count / 25); i++)
+        var outputItems = new List<WorkAmountForMonth>();
+        WorkAmountForMonth ignore;
+        ignore.hours = 0;
+        ignore.monthYear = DateTime.MinValue;
+        for (int i = 0; i < thing.Count; i++)
         {
-            var thing = new WorkHoursEmbed();
-            var person = new Person();
-            await person.GetFromDatabase(output.ID);
-            await thing.SetupEmbed(temp.GetRange(i, 25), person.Name);
-            embed.Add(thing);
+            if (thing[i].getStart() < new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1))
+            {
+                if (thing[i].getStart().Month > ignore.monthYear.Month)
+                {
+                    outputItems.Add(ignore);
+                    ignore.hours = 0;
+                    ignore.monthYear = new DateTime(thing[i].getStart().Year, thing[i].getStart().Month, 1);
+                }
+                if (thing[i].getStart().Day < thing[i].getEnd().Day)
+                {
+                    ignore.hours += ((thing[i].getEnd().Hour - thing[i].getStart().Hour) - 12) * -1;
+                }
+                else
+                {
+                    ignore.hours += thing[i].getEnd().Hour - thing[i].getStart().Hour;
+                }
+            }
+        }
+        outputItems.Add(ignore);
+
+        for (int i = 1; i <= (outputItems.Count / 25); i++)
+        {
+            var embedItem = new WorkHoursEmbed();
+            embedItem.SetupEmbed(outputItems.GetRange(i, 25), output.getPerson().getName());
+            embed.Add(embedItem);
         };
         var thingout = new WorkHoursEmbed();
-        var personout = new Person();
-        await personout.GetFromDatabase(output.ID);
-        await thingout.SetupEmbed(temp.GetRange(((temp.Count / 25) * 25), temp.Count % 25), personout.Name);
+        thingout.SetupEmbed(outputItems.GetRange(((outputItems.Count / 25) * 25), outputItems.Count % 25), output.getPerson().getName());
         embed.Add(thingout);
 
         var embedOutput = new List<Embed>();

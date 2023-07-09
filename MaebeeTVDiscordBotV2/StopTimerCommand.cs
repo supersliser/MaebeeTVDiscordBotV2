@@ -16,12 +16,12 @@ class StopTimerCommand : SlashCommand
 
     public override async Task HandleCommand(SocketSlashCommand command)
     {
-        WorkTimeTracker _tracker = new WorkTimeTracker();
+        WorkTimeTracker2 _tracker = new WorkTimeTracker2();
         await base.HandleCommand(command);
 
-        await _tracker.SetPerson(command.User.Username + "#" + command.User.Discriminator);
+        _tracker.setPerson(await new DatabasePersonController().useDiscord(command.User.Username + "#" + command.User.Discriminator));
 
-        await _tracker.PushEndToDatabase();
+        await new DatabaseWorkTimeTrackerController().PushToDatabase(_tracker);
 
         await command.FollowupAsync("Timer Stopped at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();

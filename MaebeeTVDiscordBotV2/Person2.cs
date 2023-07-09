@@ -231,7 +231,7 @@ class Person2
     }
     public string getTeamNames()
     {
-        if (this.Teams == null)
+        if (this.Teams.Count == 0)
         {
             return "N/A";
         }
@@ -240,6 +240,20 @@ class Person2
         {
             output += ", ";
             output += Teams[i].getName();
+        }
+        return output;
+    }
+    public string getTaskNames()
+    {
+        if (this.Tasks == null)
+        {
+            return "N/A";
+        }
+        string output = Tasks[0].getTitle();
+        for (int i = 1; i < Tasks.Count; i++)
+        {
+            output += ", ";
+            output += Tasks[i].getTitle();
         }
         return output;
     }
@@ -254,6 +268,14 @@ class Person2
             Description = getDescription(),
             Image = getImage(),
         };
+    }
+    public List<Task2> getTasks()
+    {
+        if (this.Tasks == null)
+        {
+            return new List<Task2>();
+        }
+        return Tasks;
     }
 }
 

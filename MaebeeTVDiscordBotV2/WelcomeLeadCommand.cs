@@ -18,12 +18,10 @@ class WelcomeLeadCommand : SlashCommand
     {
         await command.RespondAsync("Getting even funkier");
 
-        embed = new List<TEmbed>
-        {
-            new WelcomeLeadEmbed()
-        };
-
-        await embed.Last().SetupEmbed();
+        embed = new List<TEmbed>();
+        var temp = new WelcomeLeadEmbed();
+        temp.SetupEmbed();
+        embed.Add(temp);
         await command.FollowupAsync(embed: embed.Last().Build(), ephemeral: _ephemeral);
         await command.DeleteOriginalResponseAsync();
     }

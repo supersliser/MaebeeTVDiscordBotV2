@@ -6,54 +6,52 @@ using System.Threading.Tasks;
 
 class TaskEmbed : TEmbed
 {
-    protected List<STask> _tasks;
+    protected List<Task2> _tasks;
 
-    public override async Task SetupEmbed(STask task)
+    public void SetupEmbed(Task2 task)
     {
-        _tasks = new List<STask>()
+        _tasks = new List<Task2>()
         {
             task
         };
-        _title = "Check details for " + task.Name;
+        _title = "Check details for " + task.getTitle();
         _description = "Check the details for this task before commiting them to the database";
         _fields = new List<Discord.EmbedFieldBuilder>();
         string people;
         try
         {
-            var temp = await task.GetPeopleForTask();
-            people = temp[0].Name;
-            for (int i = 1; i < temp.Count; i++)
-            {
-                people += ", ";
-                people += temp[i].Name;
-            }
+            people = task.getAssigneesAsString();
         }
         catch
+        {
+            people = "N/A";
+        }
+        if (people == "")
         {
             people = "N/A";
         }
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "ID",
-            Value = task.ID,
+            Value = task.getID(),
             IsInline = false
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Title",
-            Value = task.Name,
+            Value = task.getTitle(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Description",
-            Value = task.Description,
+            Value = task.getDescription(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Team",
-            Value = task.Team,
+            Value = task.getTeam(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
@@ -65,35 +63,35 @@ class TaskEmbed : TEmbed
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Resources",
-            Value = ListToString(task.Resources),
+            Value = task.getResourcesAsOne(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Output",
-            Value = task.Output,
+            Value = task.getOutput(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Date Created",
-            Value = task.Created,
+            Value = task.getCreated(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Date Modified",
-            Value = task.Modified,
+            Value = task.getUpdated(),
             IsInline = true
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Due",
-            Value = task.Due,
+            Value = task.getDue(),
             IsInline = true
         });
     }
-    public override async Task SetupEmbed(List<STask> tasks, bool acceptedTasks)
+    public void SetupEmbed(List<Task2> tasks, bool acceptedTasks)
     {
         _tasks = tasks;
         _title = "Tasks";
@@ -107,45 +105,43 @@ class TaskEmbed : TEmbed
         }
         //convert team
         _fields = new List<Discord.EmbedFieldBuilder>();
-        foreach (STask task in tasks)
+        foreach (Task2 task in tasks)
         {
             string people;
             try
             {
-                var temp = await task.GetPeopleForTask();
-                people = temp[0].Name;
-                for (int i = 1; i < temp.Count; i++)
-                {
-                    people += ", ";
-                    people += temp[i].Name;
-                }
+                people = task.getAssigneesAsString();
             }
             catch
+            {
+                people = "N/A";
+            }
+            if (people == "")
             {
                 people = "N/A";
             }
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "ID",
-                Value = task.ID,
+                Value = task.getID(),
                 IsInline = false
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Title",
-                Value = task.Name,
+                Value = task.getTitle(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Description",
-                Value = task.Description,
+                Value = task.getDescription(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Team",
-                Value = task.Team,
+                Value = task.getTeam(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
@@ -157,31 +153,31 @@ class TaskEmbed : TEmbed
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Resources",
-                Value = ListToString(task.Resources),
+                Value = task.getResourcesAsOne(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Output",
-                Value = task.Output,
+                Value = task.getOutput(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Date Created",
-                Value = task.Created,
+                Value = task.getCreated(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Date Modified",
-                Value = task.Modified,
+                Value = task.getUpdated(),
                 IsInline = true
             });           
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Due",
-                Value = task.Due,
+                Value = task.getDue(),
                 IsInline = true
             });
 

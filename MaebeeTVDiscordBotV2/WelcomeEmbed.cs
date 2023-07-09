@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 class WelcomeEmbed : TEmbed
 {
-    public override async Task SetupEmbed()
+    public void SetupEmbed()
     {
         _title = "Welcome to MaebeeTVBot V2";
         _description = "We dont talk about V1, mans was too unorganised";

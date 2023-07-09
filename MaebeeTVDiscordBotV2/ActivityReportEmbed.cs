@@ -7,50 +7,48 @@ using System.Threading.Tasks;
 
 class ActivityReportEmbed : TEmbed
 {
-    protected List<ActivityReport> _reports;
 
-    public override async Task SetupEmbed(List<ActivityReport> reports)
+    public void SetupEmbed(List<ActivityReport2> reports)
     {
-        _reports = reports;
         _title = "Activity reports";
         _description = "These are the activity reports that meet the given criteria";
         _fields = new List<Discord.EmbedFieldBuilder>();
-        foreach (var report in _reports)
+        foreach (var report in reports)
         {
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Timestamp",
-                Value = report.Timestamp,
+                Value = report.getTimestamp(),
                 IsInline = false
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Reporter",
-                Value = report.GetReporter().PersonName,
+                Value = report.getReporter().getName(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Reported",
-                Value = report.GetReported().PersonName,
+                Value = report.getReported().getName(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Activity",
-                Value = report.Activity,
+                Value = report.getActivity(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Productivity",
-                Value = report.Productivity,
+                Value = report.getProductivity(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Vibe",
-                Value = report.Vibe,
+                Value = report.getVibe(),
                 IsInline = true
             });
         }

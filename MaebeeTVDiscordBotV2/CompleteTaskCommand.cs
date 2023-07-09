@@ -26,9 +26,9 @@ class CompleteTaskCommand : SlashCommand
     {
         await base.HandleCommand(command);
 
-        var task = new STask();
-        await task.GetFromDatabase(long.Parse(command.Data.Options.Where(x => x.Name == "id").Last().Value.ToString()));
-        await task.CompleteTask();
+        var task = await new DatabaseTaskController().useID(long.Parse(command.Data.Options.Where(x => x.Name == "id").Last().Value.ToString()));
+        task.setCompleted(true);
+        await new DatabaseTaskController().PushToDatabase(task);
 
         await command.FollowupAsync("update successful", ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();

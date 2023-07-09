@@ -31,10 +31,9 @@ class UpdateDiscordCommand : SlashCommand
     public override async Task HandleCommand(SocketSlashCommand command)
     {
         await base.HandleCommand(command);
-        var person = new Person();
-        await person.GetFromDatabase(long.Parse(command.Data.Options.Where(x => x.Name == "id").First().Value.ToString()));
-        person.UpdateDiscord(((SocketGuildUser)command.Data.Options.Where(x => x.Name == "new-discord").First().Value).Username + "#" + ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "new-discord").First().Value).Discriminator);
-        await person.PushToDatabase();
+        var person = await new DatabasePersonController().useID(long.Parse(command.Data.Options.Where(x => x.Name == "id").First().Value.ToString()));
+        person.setDiscord((SocketGuildUser)command.Data.Options.Where(x => x.Name == "new-discord").First().Value);
+        await new DatabasePersonController().PushToDatabase(person);
 
         await command.FollowupAsync("Discord Updated", ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();

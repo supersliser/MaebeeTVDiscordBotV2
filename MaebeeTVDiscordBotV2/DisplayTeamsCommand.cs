@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 class DisplayTeamsCommand : SlashCommand
 {
@@ -19,20 +20,17 @@ class DisplayTeamsCommand : SlashCommand
     {
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
-        var temp = await new Team().GetAllFromDatabase();
-        List<Team> _teams = new List<Team>();
-        foreach (var team in temp)
-        {
-            _teams.Add(new Team());
-            _teams.Last().SetTeam(team);
-        }
+        var teams = await new DatabaseTeamController().all();
 
-        for (int i = 0; i <= (_teams.Count / 8); i++)
+        for (int i = 0; i <= (teams.Count / 8); i++)
         {
-            embed.Add(new TeamEmbed());
-            await embed.Last().SetupEmbed(_teams.GetRange(i, 8));
+            var tempEmbe = new TeamEmbed();
+            tempEmbe.SetupEmbed(teams.GetRange(i, 8));
+            embed.Add(tempEmbe);
         };
-        await embed.Last().SetupEmbed(_teams.GetRange(((_teams.Count / 8) * 8), _teams.Count % 8));
+        var tempEmbed = new TeamEmbed();
+        tempEmbed.SetupEmbed(teams.GetRange(((teams.Count / 8) * 8), teams.Count % 8));
+        embed.Add(tempEmbed);
 
         var embedOutput = new List<Embed>();
         foreach(var embed in embed)

@@ -43,7 +43,6 @@ class Program
         guilds[0] = 903258487872700517;
         guilds[1] = 833059868272885781;
 
-
         commands.Add(new FrogSlashCommand());
         commands.Add(new AddPersonCommand());
         commands.Add(new AddTeamCommand());
@@ -62,6 +61,8 @@ class Program
         commands.Add(new AcceptTaskCommand());
         commands.Add(new CompleteTaskCommand());
         commands.Add(new StrikePersonCommand());
+        commands.Add(new DescribeYourselfCommand());
+        commands.Add(new AddImageCommand());
 
 
 

@@ -1,13 +1,15 @@
-﻿using Discord.WebSocket;
+﻿using Discord;
+using Discord.WebSocket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
 class AddTeamCommand : SlashCommand
 {
-    Team _team;
+    Team2 _team;
     public AddTeamCommand()
     {
         _name = "add-team";
@@ -21,21 +23,17 @@ class AddTeamCommand : SlashCommand
                 true,
                 Discord.ApplicationCommandOptionType.String)
         };
-        embed = new List<TEmbed>() { new TeamEmbed(), };
     }
 
     public override async Task HandleCommand(SocketSlashCommand command)
     {
+        embed = new List<TEmbed>();
         await base.HandleCommand(command);
-        _team = new Team();
+        _team = new Team2();
 
-        _team.SetTeam(new supabaseTeam()
-        {
-            TeamName = command.Data.Options.Where(x => x.Name == "name").First().Value.ToString(),
-        });
-        var tempEmbedThing = new List<Team>()
-        { _team };
-        await embed[0].SetupEmbed(tempEmbedThing);
+        _team.setName(command.Data.Options.Where(x => x.Name == "name").First().Value.ToString());
+        var temp = new TeamEmbed();
+        temp.SetupEmbed(_team);
 
         _buttons = new List<TButton>()
         {
@@ -49,7 +47,7 @@ class AddTeamCommand : SlashCommand
 
     public async Task HandleAccept(SocketMessageComponent command)
     {
-        await _team.PushToDatabase();
+        await new DatabaseTeamController().PushToDatabase(_team);
         await command.RespondAsync("Database Updated", ephemeral: Ephemeral);
     }
     public async Task HandleCancel(SocketMessageComponent command)

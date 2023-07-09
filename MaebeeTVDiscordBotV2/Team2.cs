@@ -73,10 +73,18 @@ class Team2
 
     public long getID()
     {
+        if (ID == 0)
+        {
+            return 16;
+        }
         return ID;
     }
     public string getName()
     {
+        if (Name == null)
+        {
+            return "N/A";
+        }
         return Name;
     }
     public supabaseTeam getSupabase()
@@ -89,6 +97,10 @@ class Team2
     }
     public List<Person2> getMembers()
     {
+        if ( Members == null)
+        {
+            Members = new List<Person2>();
+        }
         return Members;
     }
 }

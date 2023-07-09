@@ -11,7 +11,7 @@ class DatabaseTeamController : SupabaseClient
         (supabaseTeam team)
     {
         Team2 output = new Team2(team);
-        if (team.TeamID == 0)
+        if (team.TeamID != 0)
         {
             var request = await client
                 .From<supabasePersonTeam>()
@@ -58,6 +58,20 @@ class DatabaseTeamController : SupabaseClient
             .Where(x => x.TeamName == Name)
             .Get();
         return await GetNonLocalData(team.Model);
+    }
+
+    public async Task<List<Team2>> all()
+    {
+        var teams = await client
+            .From<supabaseTeam>()
+            .Select("*")
+            .Get();
+        var output = new List<Team2>();
+        foreach (supabaseTeam team in teams.Models)
+        {
+            output.Add(await GetNonLocalData(team));
+        }
+        return output;
     }
 
     public async Task PushToDatabase(Team2 team)

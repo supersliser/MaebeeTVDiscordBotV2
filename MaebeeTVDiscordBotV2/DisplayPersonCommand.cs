@@ -27,11 +27,10 @@ class DisplayPersonCommand : SlashCommand
     {
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
-        Person _person = new Person();
-        await _person.GetFromDatabase((SocketUser)command.Data.Options.Where(x => x.Name == "discord").First().Value);
+        Person2 _person = await new DatabasePersonController().useDiscord((SocketUser)command.Data.Options.Where(x => x.Name == "discord").First().Value);
 
-        var temp = new UserEmbed();
-        await temp.SetupEmbed(_person, (short)await _person.GetActivity(), (short)await _person.GetProductivity(), (short)await _person.GetVibe());
+        var temp = new PersonEmbed();
+        temp.SetupEmbed(_person, _person.getActivity(), _person.getProductivity(), _person.getVibe());
         embed.Add(temp);
 
         await command.FollowupAsync(embed: embed.First().Build(), ephemeral: Ephemeral);

@@ -10,7 +10,7 @@ class DatabaseTaskController : SupabaseClient
     protected async Task<Task2> GetNonLocalData(supabaseTask task)
     {
         Task2 output = new Task2(task);
-        if (task.TaskID == 0)
+        if (task.TaskID != 0)
         {
             var request = await client
                 .From<supabasePersonTask>()
@@ -29,16 +29,6 @@ class DatabaseTaskController : SupabaseClient
             }
         }
         return output;
-    }
-    public async Task<bool> CheckPersonTaskExists(long TaskID, long PersonID)
-    {
-        var request = await client
-            .From<supabasePersonTask>()
-            .Select("*")
-            .Where(x => x.PersonID == PersonID)
-            .Where(x => x.TaskID == TaskID)
-            .Get();
-        return request.Model != null;
     }
     public async Task<Task2> useID(long ID)
     {
@@ -281,5 +271,49 @@ class DatabaseTaskController : SupabaseClient
             output.Add(new Task2(task.Model));
         }
         return output;
+    }
+
+    public async Task PushToDatabase(Task2 task)
+    {
+        supabaseTask output = task.getSupabase();
+        List<Person2> people = task.getAssignees();
+        if (output.TaskID == 0)
+        {
+            var response = await client
+                .From<supabaseTask>()
+                .Insert(output);
+            output = response.Model;
+            foreach (Person2 person in people)
+            {
+                if (!await new DatabasePersonController().CheckPersonTaskExists(output.TaskID, person.getID()))
+                {
+                    supabasePersonTask item = new supabasePersonTask()
+                    {
+                        PersonID = person.getID(),
+                        TaskID = output.TaskID
+                    };
+                    await client
+                        .From<supabasePersonTask>()
+                        .Insert(item);
+                }
+            }
+        }
+        else
+        {
+            await client
+                .From<supabaseTask>()
+                .Where(x => x.TaskID == output.TaskID)
+                .Set(x => x.TaskName, output.TaskName)
+                .Set(x => x.Description, output.Description)
+                .Set(x => x.TeamID, output.TeamID)
+                .Set(x => x.ResourceLocations, output.ResourceLocations)
+                .Set(x => x.OutputLocation, output.OutputLocation)
+                .Set(x => x.DateCreated, output.DateCreated)
+                .Set(x => x.DateLastModified, output.DateLastModified)
+                .Set(x => x.Completed, output.Completed)
+                .Set(x => x.DateCompleted, output.DateCompleted)
+                .Set(x => x.DueDate, output.DueDate)
+                .Update();
+        }
     }
 }

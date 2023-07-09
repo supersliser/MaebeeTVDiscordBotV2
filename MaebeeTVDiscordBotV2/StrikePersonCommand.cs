@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 class StrikePersonCommand : SlashCommand
 {
-    ActivityReport _report;
+    ActivityReport2 _report;
     public StrikePersonCommand()
     {
         _name = "strike-person";
@@ -26,11 +26,10 @@ class StrikePersonCommand : SlashCommand
     public override async Task HandleCommand(SocketSlashCommand command)
     {
         await base.HandleCommand(command);
-        Person person = new Person();
-        await person.GetFromDatabase((SocketUser)command.Data.Options.Where(x => x.Name == "person").First().Value);
-        person.AddStrike();
-        await person.PushToDatabase();
-        await command.FollowupAsync("Strike Added");
+        Person2 person = await new DatabasePersonController().useDiscord((SocketUser)command.Data.Options.Where(x => x.Name == "person").First().Value);
+        person.incrementStrikeCount();
+        await new DatabasePersonController().PushToDatabase(person);
+        await command.FollowupAsync("Strike Added", ephemeral: Ephemeral);
         await command.DeleteOriginalResponseAsync();
     }
 }

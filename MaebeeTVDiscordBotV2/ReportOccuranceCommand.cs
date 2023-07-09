@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 class ReportOccuranceCommand : SlashCommand
 {
-    OccuranceReport _report;
+    OccuranceReport2 _report;
     public ReportOccuranceCommand()
     {
         _name = "report-occurance";
@@ -27,17 +27,17 @@ class ReportOccuranceCommand : SlashCommand
     {
         _modal = new ReportOccuranceModal(HandleAccept, _name);
 
-        _report = new OccuranceReport();
-        await _report.SetResponse(((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value).Username + "#" + ((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value).Discriminator, command.User.Username + "#" + command.User.Discriminator);
+        _report = new OccuranceReport2();
+        _report.setReported(await new DatabasePersonController().useDiscord((SocketGuildUser)command.Data.Options.Where(x => x.Name == "person").First().Value));
+        _report.setReporter(await new DatabasePersonController().useDiscord(command.User));
 
         await command.RespondWithModalAsync(_modal.Build());
     }
 
     public async Task HandleAccept(SocketModal command)
     {
-        await _report.SetResponse(command.Data.Components.Where(x => x.CustomId == "description").First().Value);
-        await _report.PushToDatabase();
+        _report.setDescription(command.Data.Components.Where(x => x.CustomId == "description").First().Value);
+        await new DatabaseOccuranceReportController().PushToDatabase(_report);
         await command.RespondAsync("Database Updated", ephemeral: Ephemeral);
-
     }
 }

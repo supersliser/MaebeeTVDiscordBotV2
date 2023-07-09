@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 class WelcomeLeadEmbed : TEmbed
 {
-    public override async Task SetupEmbed()
+    public void SetupEmbed()
     {
         _title = "Hi There";
         _description = "So heres how to setup a task";

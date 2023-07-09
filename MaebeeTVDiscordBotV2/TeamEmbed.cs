@@ -7,9 +7,9 @@ using System.Windows.Forms.VisualStyles;
 
 class TeamEmbed : TEmbed
 {
-    protected List<Team> _teams;
+    protected List<Team2> _teams;
 
-    public override async Task SetupEmbed(List<Team> teams)
+    public void SetupEmbed(List<Team2> teams)
     {
         _teams = teams;
         _title = "Teams";
@@ -18,27 +18,27 @@ class TeamEmbed : TEmbed
         _fields = new List<Discord.EmbedFieldBuilder>();
         foreach (var team in teams)
         {
-            if (team.ID != 16)
+            if (team.getID() != 16)
             {
                 string members;
-                    List<Person> temp = await team.GetPeopleFromTeam();
-                    members = temp[0].Name;
+                    List<Person2> temp = team.getMembers();
+                    members = temp[0].getName();
                 for (int i = 1; i < temp.Count; i++)
                 {
                     members += ", ";
-                    members += temp[i].Name;
+                    members += temp[i].getName();
                 }
 
                 _fields.Add(new Discord.EmbedFieldBuilder()
                 {
                     Name = "ID",
-                    Value = team.ID,
+                    Value = team.getID(),
                     IsInline = true,
                 });
                 _fields.Add(new Discord.EmbedFieldBuilder()
                 {
                     Name = "Name",
-                    Value = team.Name,
+                    Value = team.getName(),
                     IsInline = true,
                 });
                 _fields.Add(new Discord.EmbedFieldBuilder()
@@ -50,30 +50,30 @@ class TeamEmbed : TEmbed
             };
         }
     }
-    public override async Task SetupEmbed(Team team)
+    public void SetupEmbed(Team2 team)
     {
-        _teams = new List<Team>() { team };
-        _title = team.Name;
+        _teams = new List<Team2>() { team };
+        _title = team.getName();
         _description = "Information about this team";
 
         _fields = new List<Discord.EmbedFieldBuilder>();
-        List<Person> temp = await team.GetPeopleFromTeam();
-        string members = temp[0].Name;
+        List<Person2> temp = team.getMembers();
+        string members = temp[0].getName();
         for (int i = 1; i < temp.Count; i++)
         {
             members += ", ";
-            members += temp[i].Name;
+            members += temp[i].getName();
         }
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "ID",
-            Value = team.ID,
+            Value = team.getID(),
             IsInline = true,
         });
         _fields.Add(new Discord.EmbedFieldBuilder()
         {
             Name = "Name",
-            Value = team.Name,
+            Value = team.getName(),
             IsInline = true,
         });
         _fields.Add(new Discord.EmbedFieldBuilder()

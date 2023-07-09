@@ -42,17 +42,6 @@ class TEmbed
 
         return output;
     }
-
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    public virtual async Task SetupEmbed() { }
-    public virtual async Task SetupEmbed(Person person) { }
-    public virtual async Task SetupEmbed(List<Team> teams) { }
-    public virtual async Task SetupEmbed(Team team) { }
-    public virtual async Task SetupEmbed(List<STask> tasks, bool acceptedTasks) { }
-    public virtual async Task SetupEmbed(STask task) { }
-    public virtual async Task SetupEmbed(List<ActivityReport> reports) { }
-    public virtual async Task SetupEmbed(List<OccuranceReport> reports) { }
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     public Embed Build()
     {
         var output = new EmbedBuilder()

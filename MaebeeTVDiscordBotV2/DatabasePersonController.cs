@@ -16,7 +16,7 @@ class DatabasePersonController : SupabaseClient
     protected async Task<Person2> GetNonLocalData(supabasePerson person)
     {
         Person2 output = new Person2(person);
-        if (person.PersonID == 0)
+        if (person.PersonID != 0)
         {
             var request = await client
                 .From<supabasePersonTeam>()
@@ -65,6 +65,16 @@ class DatabasePersonController : SupabaseClient
             .Select("*")
             .Where(x => x.PersonID == PersonID)
             .Where(x => x.TeamID == TeamID)
+            .Get();
+        return request.Model != null;
+    }
+    public async Task<bool> CheckPersonTaskExists(long TaskID, long PersonID)
+    {
+        var request = await client
+            .From<supabasePersonTask>()
+            .Select("*")
+            .Where(x => x.PersonID == PersonID)
+            .Where(x => x.TaskID == TaskID)
             .Get();
         return request.Model != null;
     }
@@ -139,6 +149,7 @@ class DatabasePersonController : SupabaseClient
     {
         supabasePerson output = person.getSupabase();
         List<Team2> teams = person.getTeams();
+        List<Task2> tasks = person.getTasks();
         if (output.PersonID == 0)
         {
             var response = await client
@@ -156,6 +167,20 @@ class DatabasePersonController : SupabaseClient
                     };
                     await client
                         .From<supabasePersonTeam>()
+                        .Insert(item);
+                }
+            }
+            foreach (Task2 task in tasks)
+            {
+                if (!await CheckPersonTaskExists(task.getID(), output.PersonID))
+                {
+                    supabasePersonTask item = new supabasePersonTask()
+                    {
+                        PersonID = output.PersonID,
+                        TaskID = task.getID()
+                    };
+                    await client
+                        .From<supabasePersonTask>()
                         .Insert(item);
                 }
             }
@@ -194,4 +219,33 @@ public class supabasePerson : BaseModel
 
     [Column("Description")]
     public string Description { get; set; }
+}
+
+[Table("PersonTeam")]
+#pragma warning disable IDE1006 // Naming Styles
+public class supabasePersonTeam : BaseModel
+#pragma warning restore IDE1006 // Naming Styles
+{
+    [PrimaryKey("ID")]
+    public long ID { get; set; }
+
+    [Column("PersonID")]
+    public long PersonID { get; set; }
+
+    [Column("TeamID")]
+    public long TeamID { get; set; }
+}
+[Table("PersonTask")]
+#pragma warning disable IDE1006 // Naming Styles
+public class supabasePersonTask : BaseModel
+#pragma warning restore IDE1006 // Naming Styles
+{
+    [PrimaryKey("ID")]
+    public long ID { get; set; }
+
+    [Column("PersonID")]
+    public long PersonID { get; set; }
+
+    [Column("TaskID")]
+    public long TaskID { get; set; }
 }

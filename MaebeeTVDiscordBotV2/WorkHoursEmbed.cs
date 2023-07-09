@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 class WorkHoursEmbed : TEmbed
 {
 
-    public async Task SetupEmbed(List<WorkAmountForMonth> workAmounts, string personName)
+    public void SetupEmbed(List<WorkAmountForMonth> workAmounts, string personName)
     {
         _title = "Work Amount for " + personName;
         _description = "These are the work hours for this person per month";

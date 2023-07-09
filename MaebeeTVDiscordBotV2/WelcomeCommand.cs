@@ -29,17 +29,16 @@ class WelcomeCommand : SlashCommand
     {
         await command.RespondAsync("Preparing to get funky");
 
-        embed = new List<TEmbed>
-        {
-            new WelcomeEmbed()
-        };
+        embed = new List<TEmbed>();
 
         //var voice = new VoiceHandler();
         
         //await voice.JoinAudio(((IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value).Guild,(IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value);
         //await voice.SendAudioAsync(((IVoiceChannel)command.Data.Options.Where(x => x.Name == "vc").Last().Value).Guild, command.Channel, "'/voicebooking-speech.wav/'");
 
-        await embed.Last().SetupEmbed();
+        var temp = new WelcomeEmbed();
+        temp.SetupEmbed();
+        embed.Add(temp);
         await command.FollowupAsync(embed: embed.Last().Build(), ephemeral: _ephemeral);
         await command.DeleteOriginalResponseAsync();
     }

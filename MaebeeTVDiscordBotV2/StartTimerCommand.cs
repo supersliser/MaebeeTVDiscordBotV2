@@ -17,14 +17,14 @@ class StartTimerCommand : SlashCommand
 
     public override async Task HandleCommand(SocketSlashCommand command)
     {
-        WorkTimeTracker _tracker = new WorkTimeTracker();
+        WorkTimeTracker2 _tracker = new WorkTimeTracker2();
         await base.HandleCommand(command);
 
-        await _tracker.SetPerson(command.User.Username + "#" + command.User.Discriminator);
+        _tracker.setPerson(await new DatabasePersonController().useDiscord(command.User.Username + "#" + command.User.Discriminator));
 
-        if (!await _tracker.TimerGoing())
+        if (_tracker.getStart() != _tracker.getEnd())
         {
-            await _tracker.PushStartToDatabase();
+            await new DatabaseWorkTimeTrackerController().PushToDatabase(_tracker);
 
             await command.FollowupAsync("Timer Started at " + DateTime.Now.ToShortTimeString(), ephemeral: Ephemeral);
         }

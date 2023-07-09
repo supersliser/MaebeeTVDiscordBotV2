@@ -19,21 +19,17 @@ class DisplayTasksCommand : SlashCommand
     {
         embed = new List<TEmbed>();
         await base.HandleCommand(command);
-        var temp = await new STask().GetTasksForPerson(command.User.Username + "#" + command.User.Discriminator);
-        List<STask> _tasks = new List<STask>();
-        foreach (var task in temp)
-        {
-            _tasks.Add(new STask());
-            _tasks.Last().SetTask(task);
-        }
+        var tasks = (await new DatabasePersonController().useDiscord(command.User.Username + "#" + command.User.Discriminator)).getTasks();
 
-        for (int i = 1; i < (_tasks.Count / 2); i++)
+        for (int i = 1; i < (tasks.Count / 2); i++)
         {
-            embed.Add(new TaskEmbed());
-            await embed.Last().SetupEmbed(_tasks.GetRange(i, 2), false);
+            var tempEmbe = new TaskEmbed();
+            tempEmbe.SetupEmbed(tasks.GetRange(i, 2), false);
+            embed.Add(tempEmbe);
         }
-        embed.Add(new TaskEmbed());
-        await embed.Last().SetupEmbed(_tasks.GetRange(((_tasks.Count / 2) * 2), _tasks.Count % 2), false);
+        var tempEmbed = new TaskEmbed();
+        tempEmbed.SetupEmbed(tasks.GetRange(((tasks.Count / 2) * 2), tasks.Count % 2), false);
+        embed.Add(tempEmbed);
 
         var embedOutput = new List<Embed>();
         foreach (var embed in embed)

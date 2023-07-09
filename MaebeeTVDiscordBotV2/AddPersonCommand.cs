@@ -44,7 +44,6 @@ class AddPersonCommand : SlashCommand
     {
         _person = null;
         await command.RespondAsync("Datebase Update Cancelled", ephemeral: Ephemeral);
-
     }
 
     public override async Task HandleCommand(SocketSlashCommand command)
@@ -60,9 +59,12 @@ class AddPersonCommand : SlashCommand
         _person = new Person2();
         _person.setName(command.Data.Options.Where(x => x.Name == "name").First().Value.ToString());
         _person.setDiscord((SocketGuildUser)command.Data.Options.Where(x => x.Name == "discord").First().Value);
-        _person.setTeams();
-        var thing = new UserEmbed();
-        await thing.SetupEmbed(_person, _person.getTeams());
+        foreach (var item in teams)
+        {
+            _person.addTeam(await new DatabaseTeamController().useName(item));
+        }
+        var thing = new PersonEmbed();
+        thing.SetupEmbed(_person, _person.getTeams());
         embed.Add(thing);
 
         _buttons = new List<TButton>()

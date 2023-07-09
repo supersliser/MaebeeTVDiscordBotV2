@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 class AddTaskCommand : SlashCommand
 {
-    STask _task;
+    Task2 _task;
     public AddTaskCommand()
     {
         _name = "add-task";
@@ -58,15 +58,12 @@ class AddTaskCommand : SlashCommand
 
     public override async Task HandleCommand(SocketSlashCommand command)
     {
-        embed = new List<TEmbed>()
-        {
-            new TaskEmbed(),
-        };
+        embed = new List<TEmbed>();
         await base.HandleCommand(command);
 
         string[] separator = new string[1];
         separator[0] = ", ";
-        string[] thing = new string[20];
+        string thing;
         string[] peeps = new string[20];
         string title;
         string description;
@@ -75,7 +72,7 @@ class AddTaskCommand : SlashCommand
         string due;
         try
         {
-            thing = command.Data.Options.Where(x => x.Name == "resources").First().Value.ToString().Split(separator, StringSplitOptions.None);
+            thing = command.Data.Options.Where(x => x.Name == "resources").First().Value.ToString();
         }
         catch 
         {
@@ -130,18 +127,21 @@ class AddTaskCommand : SlashCommand
             due = null;
         }
 
-        _task = new STask();
-        await _task.SetTask(
-            title,
-            description,
-            false,
-            team,
-            thing,
-            output,
-            due,
-            peeps
-            );
-        await embed[0].SetupEmbed(_task);
+        _task = new Task2();
+        _task.setTitle(title);
+        _task.setDescription(description);
+        _task.setDue(due);
+        _task.setCompleted(false);
+        _task.setTeam(await new DatabaseTeamController().useName(team));
+        _task.setResources(thing);
+        _task.setOutput(output);
+        foreach (string person in peeps)
+        {
+            _task.addAssignee(await new DatabasePersonController().useName(person));
+        }
+        var blah = new TaskEmbed();
+        blah.SetupEmbed(_task);
+        embed.Add(blah);
 
         _buttons = new List<TButton>()
         {
@@ -155,7 +155,7 @@ class AddTaskCommand : SlashCommand
 
     public async Task HandleAccept(SocketMessageComponent command)
     {
-        await _task.PushToDatabase();
+        await new DatabaseTaskController().PushToDatabase(_task);
         await command.RespondAsync("Database Updated", ephemeral: Ephemeral);
     }
     public async Task HandleCancel(SocketMessageComponent command)

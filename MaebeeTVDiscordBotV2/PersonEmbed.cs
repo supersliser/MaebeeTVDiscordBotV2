@@ -8,66 +8,53 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-class UserEmbed : TEmbed
+class PersonEmbed : TEmbed
 {
     protected Person2 _person;
-    protected List<STask> _tasks;
+    protected List<Task2> _tasks;
    
-    public async Task<List<STask>> GetTasks()
+    public string TasksToText()
     {
-        var temp = new STask();
-        _tasks = new List<STask>();
-        await temp.GetTasksForPerson(Discord);
-        _tasks.Add(temp);
-        return _tasks;
-    }
-    public async Task<string> TeamsToText()
-    {
-        var teams = await GetTeams();
-        string output = teams[0].Name;
-        for (int i = 1; i < teams.Count; i++)
-        {
-            output += ", ";
-            output += teams[i].Name;
-        }
-        return output;
-    }    
-    public async Task<string> TasksToText()
-    {
-        var tasks = await GetTasks();
-        string output = tasks[0].Name;
+        var tasks = _person.getTasks();
+        string output = tasks[0].getTitle();
         for (int i = 1; i < tasks.Count; i++)
         {
             output += ", ";
-            output += tasks[i].Name;
+            output += tasks[i].getTitle();
         }
         return output;
     }
 
-    public async Task SetupEmbed(Person2 person, short activity, short productivity, short vibe)
+    public void SetupEmbed(Person2 person, short activity, short productivity, short vibe)
     {
         _person = person;
-        _title = Name;
-        _description = "These are the details for " + Name;
+        _title = person.getName();
+        _description = "These are the details for " + person.getName();
 
         _fields = new List<Discord.EmbedFieldBuilder>
         {
             new EmbedFieldBuilder()
             {
                 Name = "ID",
-                Value = ID,
+                Value = person.getID(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
                 Name = "Name",
-                Value = Name,
+                Value = person.getName(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
+                Name = "Description",
+                Value = person.getDescription(),
+                IsInline = false,
+            },
+            new EmbedFieldBuilder()
+            {
                 Name = "Discord",
-                Value = Discord,
+                Value = person.getDiscord(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
@@ -88,17 +75,16 @@ class UserEmbed : TEmbed
                 Value = vibe + "%",
                 IsInline = true,
             },
-
             new EmbedFieldBuilder()
             {
                 Name = "Strikes",
-                Value = StrikeCount,
+                Value = person.getStrikeCount(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
                 Name = "Teams",
-                Value = await TeamsToText(),
+                Value = person.getTeamNames(),
                 IsInline = false,
             },
         };
@@ -108,47 +94,40 @@ class UserEmbed : TEmbed
                 new EmbedFieldBuilder()
                 {
                     Name = "Currently working on:",
-                    Value = await TasksToText(),
+                    Value = TasksToText(),
                     IsInline = true,
                 });
         }
     }
-    public async Task SetupEmbed(Person2 person, List<Team2> teams)
+    public void SetupEmbed(Person2 person, List<Team2> teams)
     {
-        string text;
-        text = teams[0].Name;
-        for (int i = 1; i < teams.Count; i++)
-        {
-            text += ", ";
-            text += teams[i].Name;
-        }
         _person = person;
-        _title = Name;
-        _description = "These are the details for " + Name;
+        _title = person.getName();
+        _description = "These are the details for " + person.getName();
         _fields = new List<Discord.EmbedFieldBuilder>
         {
             new EmbedFieldBuilder()
             {
                 Name = "ID",
-                Value = ID,
+                Value = person.getID(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
                 Name = "Name",
-                Value = Name,
+                Value = person.getName(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
                 Name = "Discord",
-                Value = Discord,
+                Value = person.getDiscord(),
                 IsInline = true,
             },
             new EmbedFieldBuilder()
             {
                 Name = "Teams",
-                Value = text,
+                Value = person.getTeamNames(),
                 IsInline = false,
             },
         };

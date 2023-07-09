@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 class OccuranceReportEmbed : TEmbed
 {
-    protected List<OccuranceReport> _reports;
+    protected List<OccuranceReport2> _reports;
 
-    public override async Task SetupEmbed(List<OccuranceReport> reports)
+    public void SetupEmbed(List<OccuranceReport2> reports)
     {
         _reports = reports;
         _title = "Occurance reports";
@@ -19,25 +19,25 @@ class OccuranceReportEmbed : TEmbed
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Timestamp",
-                Value = report.Timestamp,
+                Value = report.getTimestamp(),
                 IsInline = false
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Reporter",
-                Value = report.GetReporter().PersonName,
+                Value = report.getReporter().getName(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Reported",
-                Value = report.GetReported().PersonName,
+                Value = report.getReported().getName(),
                 IsInline = true
             });
             _fields.Add(new Discord.EmbedFieldBuilder()
             {
                 Name = "Description",
-                Value = report.Description,
+                Value = report.getDescription(),
                 IsInline = false
             });
         }

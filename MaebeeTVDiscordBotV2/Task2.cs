@@ -192,10 +192,18 @@ class Task2
     }
     public string getTitle()
     {
+        if ( this.Title == null)
+        {
+            return "N/A";
+        }
         return this.Title;
     }
     public string getDescription()
     {
+        if ( this.Description == null)
+        {
+            return "N/A";
+        }
         return this.Description;
     }
     public Team2 getTeam()
@@ -204,6 +212,10 @@ class Task2
     }
     public List<string> getResources()
     {
+        if (ResourceLocations == null)
+        {
+            ResourceLocations = new List<string>();
+        }
         return this.ResourceLocations;
     }
     public string getResourcesAsOne()
@@ -222,6 +234,10 @@ class Task2
     }
     public string getOutput()
     {
+        if (OutputLocation == null)
+        {
+            return "N/A";
+        }
         return OutputLocation;
     }
     public DateTime getCreated()
@@ -244,9 +260,36 @@ class Task2
     {
         return DateDue;
     }
-    public List<Person2> getPeople()
+    public List<Person2> getAssignees()
     {
         return Assignees;
+    }
+    public supabaseTask getSupabase()
+    {
+        return new supabaseTask()
+        {
+            TaskID = ID,
+            TaskName = Title,
+            Description = Description,
+            TeamID = Team.getID(),
+            ResourceLocations = ResourceLocations,
+            OutputLocation = OutputLocation,
+            DateCreated = DateCreated,
+            DateLastModified = DateUpdated,
+            Completed = Completed,
+            DateCompleted = DateCompleted,
+            DueDate = DateDue,
+        };
+    }
+    public string getAssigneesAsString()
+    {
+        string output = Assignees[0].getName();
+        for (int i = 0; i < Assignees.Count; i++)
+        {
+            output += ", ";
+            output += Assignees[i].getName();
+        }
+        return output;
     }
 }
 
