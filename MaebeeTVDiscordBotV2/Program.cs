@@ -23,8 +23,6 @@ class Program
 
     public async Task MainAsync()
     {
-        Environment.SetEnvironmentVariable("DiscordToken", "MTEwNTU3MTcwNDUxMzc3MzY2OQ.Gm9Jpt.SIsXuMbPse96fukI9rI91fjLnUWbAj_cOOXTOA", EnvironmentVariableTarget.Process);
-
         _client = new DiscordSocketClient();
         _client.Log += Log;
         await _client.LoginAsync(TokenType.Bot,
