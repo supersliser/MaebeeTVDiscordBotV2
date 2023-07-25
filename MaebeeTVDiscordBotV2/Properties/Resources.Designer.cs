@@ -59,14 +59,5 @@ namespace MaebeeTVDiscordBotV2.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to MTEwNTU3MTcwNDUxMzc3MzY2OQ.GK0ld6.kEEuYWcIhMeSRIXvYJqsOyG3yQ7axsdCXIOPSg.
-        /// </summary>
-        internal static string Token {
-            get {
-                return ResourceManager.GetString("Token", resourceCulture);
-            }
-        }
     }
 }
